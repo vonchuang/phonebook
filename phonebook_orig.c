@@ -6,7 +6,7 @@
 #include "phonebook_orig.h"
 
 /* original version */
-entry *findName(char lastName[], entry *pHead)
+entry *findLastName(char lastName[], entry *pHead)
 {
     while (pHead != NULL) {
         if (strcasecmp(lastName, pHead->lastName) == 0)
