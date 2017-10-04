@@ -48,6 +48,11 @@ int main(int argc, char *argv[])
     for (__i=0; __i < MAX_HASH_TABLE_SIZE; ++__i)
         hashTable[__i] = NULL;
 #endif
+#if defined(HASH1)
+    unsigned int __i;
+    for (__i=0; __i < MAX_HASH_TABLE_SIZE; ++__i)
+        hashTable[__i] = NULL;
+#endif
 
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
@@ -90,6 +95,8 @@ int main(int argc, char *argv[])
     output = fopen("opt.txt", "a");
 #elif defined(HASH)
     output = fopen("hash.txt", "a");
+#elif defined(HASH1)
+    output = fopen("hash1.txt", "a");
 #else
     output = fopen("orig.txt", "a");
 #endif

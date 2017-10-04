@@ -3,7 +3,7 @@
 
 #define MAX_LAST_NAME_SIZE 16
 #define MAX_HASH_TABLE_SIZE 466553
-#define HASH 1
+#define HASH1 1
 
 typedef struct __DETAIL_ENTRY {
     char firstName[16];
@@ -28,6 +28,6 @@ entry *hashTable[MAX_HASH_TABLE_SIZE];
 
 entry *findLastName(char lastName[], entry *pHead);
 entry *append(char lastName[], entry *e);
-unsigned int DJBHash(char *str);
+unsigned int BKDRHash(char *str);
 
 #endif
