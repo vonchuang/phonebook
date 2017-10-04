@@ -3,7 +3,7 @@
 
 #define MAX_LAST_NAME_SIZE 16
 #define MAX_HASH_TABLE_SIZE 466553
-#define HASH1 1
+// #define HASH1 1
 
 typedef struct __DETAIL_ENTRY {
     char firstName[16];

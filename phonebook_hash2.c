@@ -4,14 +4,21 @@
 #include <ctype.h>
 #include <assert.h>
 
-#include "phonebook_hash.h"
+#include "phonebook_opt.h"
 
-unsigned int BKDRHash( char *str){
-    unsigned int hash = 0;
-    unsigned int seed = 131; //31 131 1313 13131 etc...
+unsigned int OneAtATimeHash( char *str){
+    unsigned int hash = 0,i = 0;
 
-    while (*str)
-        hash = (hash*seed) + (*str++);
+    while (*str){
+        hash += str[i];
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+        ++i;
+        *str++;
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
 
     return (hash % MAX_HASH_TABLE_SIZE);
 }
