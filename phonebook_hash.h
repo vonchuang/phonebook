@@ -2,10 +2,9 @@
 #define _PHONEBOOK_H
 
 #define MAX_LAST_NAME_SIZE 16
+#define MAX_HASH_TABLE_SIZE 466553
+#define HASH 1
 
-/* TODO: After modifying the original version, uncomment the following
- * line to set OPT properly */
- #define OPT 1 
 typedef struct __DETAIL_ENTRY {
     char firstName[16];
     char email[16];
@@ -25,7 +24,10 @@ typedef struct __PHONE_BOOK_ENTRY{
     struct __PHONE_BOOK_ENTRY *pNext;
 } entry;
 
+entry *hashTable[MAX_HASH_TABLE_SIZE];
+
 entry *findLastName(char lastName[], entry *pHead);
 entry *append(char lastName[], entry *e);
+unsigned int DJBHash(char *str);
 
 #endif

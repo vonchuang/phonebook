@@ -6,12 +6,6 @@
 
 #include IMPL
 
-#ifdef OPT
-#define OUT_FILE "opt.txt"
-#else
-#define OUT_FILE "orig.txt"
-#endif
-
 #define DICT_FILE "./dictionary/words.txt"
 
 static double diff_in_second(struct timespec t1, struct timespec t2)
@@ -49,6 +43,12 @@ int main(int argc, char *argv[])
     e = pHead;
     e->pNext = NULL;
 
+#if defined(HASH)
+    unsigned int __i;
+    for (__i=0; __i < MAX_HASH_TABLE_SIZE; ++__i)
+        hashTable[__i] = NULL;
+#endif
+
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     e = pHead;
 
     assert(findLastName(input, e) &&
-           "Did you implement findLastName() in " IMPL "?");
+           "Did you implement findName() in " IMPL "?");
     assert(0 == strcmp(findLastName(input, e)->lastName, "zyxel"));
 
 #if defined(__GNUC__)
@@ -85,12 +85,36 @@ int main(int argc, char *argv[])
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_second(start, end);
 
-    FILE *output = fopen(OUT_FILE, "a");
+    FILE *output;
+#if defined(OPT)
+    output = fopen("opt.txt", "a");
+#elif defined(HASH)
+    output = fopen("hash.txt", "a");
+#else
+    output = fopen("orig.txt", "a");
+#endif
     fprintf(output, "append() findName() %lf %lf\n", cpu_time1, cpu_time2);
     fclose(output);
 
     printf("execution time of append() : %lf sec\n", cpu_time1);
     printf("execution time of findName() : %lf sec\n", cpu_time2);
+
+#if defined(HASH)
+    FILE *__fp;
+    entry *__entry;
+    unsigned int __count;
+    __fp = fopen("hash_slots.txt", "w");
+    for (__i=0; __i<MAX_HASH_TABLE_SIZE; ++__i) {
+        __count = 0;
+        __entry = hashTable[__i];
+        while (__entry) {
+            ++__count;
+            __entry = __entry->pNext;
+        }
+        fprintf(__fp, "%d %d\n", __i, __count);
+    }
+    fclose(__fp);
+#endif
 
     if (pHead->pNext) free(pHead->pNext);
     free(pHead);
